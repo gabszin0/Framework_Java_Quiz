@@ -1,6 +1,6 @@
-package Framework.Interface;
+package framework.Interface;
 
-interface TelaPresentacao {
+public interface TelaPresentacao {
 
     void exibirPergunta(Pergunta p);
 

@@ -1,3 +1,4 @@
+package framework.Strategy;
 class EstrategiaComTempo implements EstrategiaPontuacao {
 
     public int calcularPontos(boolean acertou, int tempo) {

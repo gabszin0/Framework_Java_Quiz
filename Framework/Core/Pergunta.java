@@ -1,4 +1,4 @@
-package Framework.Core;
+package framework.Core;
 
 import java.util.List;
 

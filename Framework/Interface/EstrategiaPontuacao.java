@@ -1,5 +1,7 @@
-package Framework.Interface;
+package framework.Interface;
 
-interface EstrategiaPontuacao {
+public interface EstrategiaPontuacao {
+
     int calcularPontos(boolean acertou, int tempoDecorrido);
+
 } 

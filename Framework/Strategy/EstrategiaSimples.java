@@ -1,4 +1,4 @@
-package Framework.Strategy;
+package framework.Strategy;
 
 class EstrategiaSimples implements EstrategiaPontuacao {
     
