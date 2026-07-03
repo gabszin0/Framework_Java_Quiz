@@ -1,4 +1,7 @@
-package framework.Interface;
+package framework.interfaces;
+
+import framework.core.Pergunta;
+import framework.core.Resultado;
 
 public interface TelaPresentacao {
 

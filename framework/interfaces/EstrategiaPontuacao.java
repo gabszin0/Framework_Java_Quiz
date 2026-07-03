@@ -1,4 +1,4 @@
-package framework.Interface;
+package framework.interfaces;
 
 public interface EstrategiaPontuacao {
 
