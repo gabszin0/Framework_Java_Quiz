@@ -3,7 +3,7 @@ package framework.core;
 import framework.interfaces.EstrategiaPontuacao;
 import framework.interfaces.TelaPresentacao;
 
-public abstract class Quiz implements EstrategiaPontuacao, TelaPresentacao {
+public abstract class Quiz {
     protected TelaPresentacao tela;
     protected EstrategiaPontuacao estrategia;
     protected Resultado resultado;

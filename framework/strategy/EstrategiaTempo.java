@@ -2,7 +2,7 @@ package framework.strategy;
 
 import framework.interfaces.EstrategiaPontuacao;
 
-class EstrategiaTempo implements EstrategiaPontuacao {
+public class EstrategiaTempo implements EstrategiaPontuacao {
 
     @Override
     public int calcularPontos(boolean acertou, int tempo) {

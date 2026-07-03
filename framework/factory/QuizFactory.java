@@ -1,20 +1,11 @@
 package framework.factory;
 
-// Necessário ainda criar os quizes de suas devidas categorias e implementa-los
+import framework.core.Quiz;
+import framework.interfaces.EstrategiaPontuacao;
+import framework.interfaces.TelaPresentacao;
 
-public class QuizFactory {
+public interface QuizFactory {
 
-    static Quiz criar(String tipo) {
-        switch (tipo) {
-            case "programacao":
-                return new QuizProgramacao();
-            case "matemática":
-                return new QuizMatematica();
-            case "conhecimentos gerais":
-                return new QuizGeral();
-            default:
-                throw new IllegalArgumentException("Tipo de quiz inválido: " + tipo);
-        }
-    }
+    Quiz criar(TelaPresentacao tela, EstrategiaPontuacao estrategia);
     
 }
