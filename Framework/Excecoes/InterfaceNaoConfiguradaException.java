@@ -1,4 +1,4 @@
-package framework.Excecoes;
+package framework.excecoes;
 
 public class InterfaceNaoConfiguradaException extends QuizException {
     public InterfaceNaoConfiguradaException(String mensagem) {

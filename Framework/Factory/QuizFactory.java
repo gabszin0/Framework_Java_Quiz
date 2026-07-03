@@ -1,4 +1,4 @@
-package framework.Factory;
+package framework.factory;
 
 public class QuizFactory {
 

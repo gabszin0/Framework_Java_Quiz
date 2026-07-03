@@ -1,4 +1,4 @@
-package framework.Core;
+package framework.core;
 
 public class Quiz implements EstrategiaPontuacao, TelaPresentacao {
     protected TelaPresentacao tela;

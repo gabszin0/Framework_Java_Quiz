@@ -1,4 +1,4 @@
-package framework.Core
+package framework.core;
 
 public class Resposta {
 
