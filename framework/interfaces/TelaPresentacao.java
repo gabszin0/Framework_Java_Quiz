@@ -3,11 +3,13 @@ package framework.interfaces;
 import framework.core.Pergunta;
 import framework.core.Resultado;
 
+import java.util.ArrayList;
+
 public interface TelaPresentacao {
-
-    void exibirPergunta(Pergunta p);
-
-    void exibirResultado(Resultado r);
+    void exibirAlternativas(ArrayList<String> alternativas);
+    void exibirPergunta(String p);
+    void exibirResultadoPergunta(int p);
+    void exibirResultadoFinal(Resultado r);
 
     int capturarResposta();
 

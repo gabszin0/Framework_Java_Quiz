@@ -32,7 +32,7 @@ public abstract class Quiz {
     
 
     protected void finalizarQuiz() {
-        tela.exibirResultado(resultado);
+        tela.exibirResultadoFinal(resultado);
     }
 
 }

@@ -1,15 +1,16 @@
 package framework.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pergunta {
 
     private String enunciado;
-    private List<String> alternativas;
+    private ArrayList <String> alternativas;
     private int respostaCorreta;
 
 
-    public Pergunta(String enunciado, List<String> alternativas, int respostaCorreta) {
+    public Pergunta(String enunciado,ArrayList<String> alternativas, int respostaCorreta) {
         this.enunciado = enunciado;
         this.alternativas = alternativas;
         this.respostaCorreta = respostaCorreta;
@@ -20,7 +21,7 @@ public class Pergunta {
         return enunciado;
     }
 
-    public List<String> getAlternativas() {
+    public ArrayList<String> getAlternativas() {
         return alternativas;
     }
 
@@ -32,7 +33,7 @@ public class Pergunta {
         this.enunciado = enunciado;
     }
 
-    public void setAlternativas(List<String> alternativas) {
+    public void setAlternativas(ArrayList<String> alternativas) {
         this.alternativas = alternativas;
     }
 
