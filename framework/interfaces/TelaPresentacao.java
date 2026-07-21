@@ -1,8 +1,6 @@
 package framework.interfaces;
 
-import framework.core.Pergunta;
 import framework.core.Resultado;
-
 import java.util.ArrayList;
 
 public interface TelaPresentacao {

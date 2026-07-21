@@ -1,12 +1,14 @@
-package framework.Cliente;
-import framework.core.*;
-import framework.interfaces.TelaPresentacao;
 
-import javax.swing.*;
+package aplicacao1.cliente; 
+
+import framework.core.Pergunta;
+import framework.core.Resultado;
+import framework.interfaces.TelaPresentacao;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
- public class TelaQuizSwing extends JFrame implements TelaPresentacao {
+public class TelaQuizSwing extends JFrame implements TelaPresentacao {
 
     private JLabel pergunta;
     ArrayList<JButton> botoes;
@@ -18,12 +20,7 @@ import java.util.ArrayList;
 
         exibirPergunta(perguntas.getEnunciado());
         exibirAlternativas(perguntas.getAlternativas());
-    exibirResultadoPergunta(perguntas.getRespostaCorreta());
-
-
-
-
-
+        exibirResultadoPergunta(perguntas.getRespostaCorreta());
 
 
         setVisible(true);

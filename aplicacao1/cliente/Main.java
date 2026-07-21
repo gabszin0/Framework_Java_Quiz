@@ -1,4 +1,4 @@
-package framework.Cliente;
+package aplicacao1.cliente;
 
 import framework.core.Pergunta;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ public class Main {
         alternativas.add("2");
         alternativas.add("3");
         alternativas.add("4");
-        Pergunta p = new Pergunta("quanto é 1+1",alternativas,2); // a resposta correta aqui é a posição da alternativa
-        new TelaQuizSwing(p);                                                                 // se é a primeira,segunda ou quarta alternativa
+        Pergunta p = new Pergunta("Quanto é 1+1",alternativas,2); // a resposta correta aqui é a posição da alternativa
+        new TelaQuizSwing(p);                                                                // se é a primeira,segunda ou quarta alternativa
     }
 }
