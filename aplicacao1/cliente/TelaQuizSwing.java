@@ -1,4 +1,3 @@
-
 package aplicacao1.cliente; 
 
 import framework.core.Pergunta;
