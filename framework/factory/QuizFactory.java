@@ -4,8 +4,11 @@ import framework.core.Quiz;
 import framework.interfaces.EstrategiaPontuacao;
 import framework.interfaces.TelaPresentacao;
 
-public interface QuizFactory {
+public abstract class QuizFactory {
 
-    Quiz criar(TelaPresentacao tela, EstrategiaPontuacao estrategia);
-    
+    public final Quiz criarQuiz(TelaPresentacao tela, EstrategiaPontuacao estrategia) {
+        return construirQuiz(tela, estrategia);
+    }
+
+    protected abstract Quiz construirQuiz(TelaPresentacao tela, EstrategiaPontuacao estrategia);
 }

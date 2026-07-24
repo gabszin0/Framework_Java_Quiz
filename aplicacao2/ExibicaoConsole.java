@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class ExibicaoConsole implements TelaPresentacao { 
     
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public ExibicaoConsole() {
         this.scanner = new Scanner(System.in);
@@ -23,7 +23,6 @@ public class ExibicaoConsole implements TelaPresentacao {
     public void exibirAlternativas(ArrayList<String> alternativas) {
         System.out.println("---------------------------------------");
         for (int i = 0; i < alternativas.size(); i++) {
-            // Supondo que a alternativa 1 seja o índice 0 da lista
             System.out.println((i + 1) + ") " + alternativas.get(i));
         }
         System.out.println("=======================================");
@@ -31,7 +30,7 @@ public class ExibicaoConsole implements TelaPresentacao {
 
     @Override
     public int capturarResposta() {
-        System.out.print("Digite o número da resposta e aperte ENTER: ");
+        System.out.print("Digite o numero da resposta e aperte ENTER: ");
         try {
             return Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
@@ -47,10 +46,10 @@ public class ExibicaoConsole implements TelaPresentacao {
 
     @Override
     public void exibirResultadoFinal(Resultado r) {
-        System.out.println("\n FIM DE JOGO! 🏁");
+        System.out.println("\n FIM DE JOGO! ");
         System.out.println("Acertos: " + r.getTotalAcertos());
         System.out.println("Erros: " + r.getTotalErros());
-        System.out.println("Pontuação Total: " + r.getPontuacaoFinal());
+        System.out.println("Pontuacao Total: " + r.getPontuacaoFinal());
 
     }
 

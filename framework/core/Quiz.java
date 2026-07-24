@@ -1,17 +1,20 @@
 package framework.core;
 
+import framework.excecoes.PerguntasNaoCarregadasException;
 import framework.interfaces.EstrategiaPontuacao;
 import framework.interfaces.TelaPresentacao;
+import java.util.List;
 
 public abstract class Quiz {
-    protected TelaPresentacao tela;
-    protected EstrategiaPontuacao estrategia;
+    protected final TelaPresentacao tela;
+    protected final EstrategiaPontuacao estrategia;
     protected Resultado resultado;
+    protected List<Pergunta> perguntas;
+    private int indiceAtual;
 
     public Quiz(TelaPresentacao tela, EstrategiaPontuacao estrategia) {
         this.tela = tela;
         this.estrategia = estrategia;
-        this.resultado = new Resultado();
     }
 
     // TEMPLATE METHOD:
@@ -24,15 +27,47 @@ public abstract class Quiz {
         finalizarQuiz();
     }
 
-    // Métodos que as aplicações específicas vão ter que implementar
-    protected abstract void inicializar();
-    protected abstract boolean temPerguntas();
-    protected abstract void processarPerguntaAtual();
-    protected abstract void avancarProxima();
-    
+    protected void inicializar() {
+        this.perguntas = carregarPerguntas();
+        if (perguntas == null || perguntas.isEmpty()) {
+            throw new PerguntasNaoCarregadasException(
+                    "carregarPerguntas() não retornou nenhuma pergunta para " + getClass().getSimpleName());
+        }
+        this.resultado = new Resultado();
+        this.indiceAtual = 0;
+    }
+
+    protected void processarPerguntaAtual() {
+        Pergunta perguntaAtual = perguntas.get(indiceAtual);
+
+        tela.exibirPergunta(perguntaAtual.getEnunciado());
+        tela.exibirAlternativas(perguntaAtual.getAlternativas());
+
+        long inicio = System.currentTimeMillis();
+        int respostaEscolhida = tela.capturarResposta();
+        int tempoDecorrido = (int) ((System.currentTimeMillis() - inicio) / 1000);
+
+        boolean acertou = respostaEscolhida == perguntaAtual.getRespostaCorreta();
+        int pontos = estrategia.calcularPontos(acertou, tempoDecorrido);
+
+        resultado.registrarResposta(
+                new Resposta(perguntaAtual, respostaEscolhida, tempoDecorrido, acertou), pontos);
+
+        tela.exibirResultadoPergunta(pontos);
+    }
+
+    protected boolean temPerguntas() {
+        return indiceAtual < perguntas.size();
+    }
+
+    protected void avancarProxima() {
+        indiceAtual++;
+    }
 
     protected void finalizarQuiz() {
         tela.exibirResultadoFinal(resultado);
     }
+
+    protected abstract List<Pergunta> carregarPerguntas();
 
 }

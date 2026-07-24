@@ -1,4 +1,4 @@
-package aplicacao1.cliente;
+package aplicacao1;
 
 import framework.core.Pergunta;
 import java.util.ArrayList;
