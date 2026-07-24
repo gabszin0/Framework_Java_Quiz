@@ -1,17 +1,19 @@
 package aplicacao1;
 
-import framework.core.Pergunta;
-import java.util.ArrayList;
+import framework.core.Quiz;
+import framework.factory.QuizFactory;
+import framework.interfaces.EstrategiaPontuacao;
+import framework.interfaces.TelaPresentacao;
+import framework.strategy.EstrategiaSimples;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<String> alternativas = new ArrayList<>();
-        alternativas.add("imprimeF();");
-        alternativas.add("postf();");
-        alternativas.add("printf();");
-        alternativas.add("System.out.println()");
-        Pergunta p = new Pergunta("Qual é o comando para imprimir dados em C? ",alternativas,3); // a resposta correta aqui é a posição da alternativa
-        new TelaQuizSwing(p);                                                                                               // se é a primeira,segunda ou quarta alternativa
-    }
-    
+        TelaPresentacao tela = new TelaQuizSwing();
+        EstrategiaPontuacao estrategia = new EstrategiaSimples();
+
+        QuizFactory factory = new QuizProgFactory();
+        Quiz quiz = factory.criarQuiz(tela, estrategia);
+
+        new Thread(quiz::executar, "quiz-thread").start();
+    } 
 }

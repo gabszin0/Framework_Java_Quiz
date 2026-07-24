@@ -1,101 +1,116 @@
 package aplicacao1; 
 
-import framework.core.Pergunta;
 import framework.core.Resultado;
 import framework.interfaces.TelaPresentacao;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.SynchronousQueue;
 import javax.swing.*;
 
 public class TelaQuizSwing extends JFrame implements TelaPresentacao {
 
-    private JLabel pergunta;
-    ArrayList<JButton> botoes;
+    private final JLabel labelPergunta = new JLabel("", SwingConstants.CENTER);
+    private final JPanel painelCentral = new JPanel();
+    private final JLabel labelFeedback = new JLabel(" ", SwingConstants.CENTER);
+    private final SynchronousQueue<Integer> filaResposta = new SynchronousQueue<>();
 
+    public TelaQuizSwing() {
+        setTitle("Quiz de Programação");
+        setSize(500, 320);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout(10, 10));
 
-    public TelaQuizSwing(Pergunta perguntas) {
-        setTitle("Quiz");
-        setSize(500,300);
+        labelPergunta.setFont(new Font("Arial", Font.BOLD, 18));
+        add(labelPergunta, BorderLayout.NORTH);
+        add(painelCentral, BorderLayout.CENTER);
+        add(labelFeedback, BorderLayout.SOUTH);
 
-        exibirPergunta(perguntas.getEnunciado());
-        exibirAlternativas(perguntas.getAlternativas());
-        exibirResultadoPergunta(perguntas.getRespostaCorreta());
-
-
+        setLocationRelativeTo(null);
         setVisible(true);
-
-
-
-    }
-   public void exibirPergunta(String p){
-       pergunta = new JLabel(p);
-       pergunta.setHorizontalAlignment(SwingConstants.CENTER);
-       pergunta.setFont(new Font("Arial", Font.BOLD, 18));
-       add(pergunta, BorderLayout.NORTH);
-
-   }
-   public void exibirAlternativas(ArrayList<String> alternativas){
-       JPanel painelAlternativas = new JPanel();
-       painelAlternativas.setLayout(new GridLayout(4,1,10,10));
-       botoes = new ArrayList<>();
-       for(String alternativa:alternativas){
-           botoes.add(new JButton(alternativa));
-
-       }
-        for(JButton botao:botoes){
-            painelAlternativas.add(botao);
-        }
-
-       add(painelAlternativas, BorderLayout.CENTER);
-        }
-
-
-
-
-
-   public void exibirResultadoPergunta(int r){
-       for(int i = 0; i < botoes.size(); i++) {
-
-           JButton botao = botoes.get(i);
-
-           int resposta = i; // guarda a posição do botão
-
-           botao.addActionListener(e -> {
-
-               if (resposta+1 == r) {
-                   new TelaResultado("Resposta correta!");
-               } else {
-                   new TelaResultado("Resposta errada!");
-               }
-
-           });
-       }
-     }
-
-     public int capturarResposta(){
-            return 0;
-     }
-
-     public void exibirFeedback(String mensagem){
-
-     }
-   public void exibirResultadoFinal(Resultado r){
-
     }
 
-}
-class TelaResultado extends JFrame {
+    @Override
+    public void exibirPergunta(String enunciado) {
+        SwingUtilities.invokeLater(() -> {
+            labelPergunta.setText(enunciado);
+            labelFeedback.setText(" ");
+        });
+    }
 
-    public TelaResultado(String mensagem){
+    @Override
+    public void exibirAlternativas(ArrayList<String> alternativas) {
+        runNaEdtEEsperar(() -> {
+            painelCentral.removeAll();
+            painelCentral.setLayout(new GridLayout(alternativas.size(), 1, 8, 8));
+            for (int i = 0; i < alternativas.size(); i++) {
+                int alternativaEscolhida = i + 1; // 1-based, igual ao resto do framework
+                JButton botao = new JButton(alternativas.get(i));
+                botao.addActionListener(e -> {
+                    try {
+                        filaResposta.put(alternativaEscolhida);
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                });
+                painelCentral.add(botao);
+            }
+            painelCentral.revalidate();
+            painelCentral.repaint();
+        });
+    }
 
-        setTitle("Resultado");
-        setSize(300,150);
+    @Override
+    public int capturarResposta() {
+        try {
+            return filaResposta.take(); // bloqueia a thread do QUIZ, nunca a EDT
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return -1;
+        }
+    }
 
-        JLabel texto = new JLabel(mensagem);
-        texto.setHorizontalAlignment(SwingConstants.CENTER);
+    @Override
+    public void exibirResultadoPergunta(int pontosGanhos) {
+        SwingUtilities.invokeLater(() ->
+                labelFeedback.setText((pontosGanhos >= 0 ? "+" : "") + pontosGanhos + " pontos"));
+    }
 
-        add(texto);
+    @Override
+    public void exibirResultadoFinal(Resultado resultado) {
+        SwingUtilities.invokeLater(() -> {
+            painelCentral.removeAll();
+            painelCentral.setLayout(new BorderLayout());
+            String mensagem = "<html><center>Fim do quiz!<br>"
+                    + "Acertos: " + resultado.getTotalAcertos() + "<br>"
+                    + "Erros: " + resultado.getTotalErros() + "<br>"
+                    + "Pontuação final: " + resultado.getPontuacaoFinal()
+                    + "</center></html>";
+            labelPergunta.setText("Resultado");
+            labelFeedback.setText(" ");
+            painelCentral.add(new JLabel(mensagem, SwingConstants.CENTER), BorderLayout.CENTER);
+            painelCentral.revalidate();
+            painelCentral.repaint();
+        });
+    }
 
-        setVisible(true);
+    @Override
+    public void exibirFeedback(String mensagem) {
+        SwingUtilities.invokeLater(() -> labelFeedback.setText(mensagem));
+    }
+
+    /** Executa r na EDT e espera terminar antes de devolver o controle à thread do quiz. */
+    private void runNaEdtEEsperar(Runnable r) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            r.run();
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(r);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            } catch (java.lang.reflect.InvocationTargetException e) {
+                throw new RuntimeException(e.getCause() != null ? e.getCause() : e);
+            }
+        }
     }
 }
