@@ -13,16 +13,18 @@ public class main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int opcao = lerOpcao(scanner);
+        int opcao;
+        do {
+             opcao = lerOpcao(scanner);
 
-        switch (opcao) {
-            case 1 -> executarQuizProgramacao();
-            case 2 -> executarQuizMatematica(scanner);
-            case 0 -> System.out.println("Encerrando.");
-            default -> System.out.println("Opcao invalida. Encerrando.");
+            switch (opcao) {
+                case 1 -> executarQuizProgramacao();
+                case 2 -> executarQuizMatematica(scanner);
+                case 0 -> System.out.println("Encerrando.");
+                default -> System.out.println("Opcao invalida.");
+            }
+        }while(opcao!=0);
         }
-
-    }
 
     private static int lerOpcao(Scanner scanner) {
         System.out.println("=== Framework_Java_Quiz ===");
