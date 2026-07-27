@@ -12,6 +12,10 @@ public class ExibicaoConsole implements TelaPresentacao {
     public ExibicaoConsole() {
         this.scanner = new Scanner(System.in);
     }
+ 
+    public ExibicaoConsole(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     @Override
     public void exibirPergunta(String p) {
