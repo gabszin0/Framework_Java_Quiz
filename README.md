@@ -1,4 +1,4 @@
-# Framework_Java_Quiz
+# Relatório Técnico 
  
 Framework Java orientado a objetos para desenvolvimento de aplicações do tipo *quiz*, com desacoplamento total entre lógica de execução, cálculo de pontuação e interface de apresentação.
  
