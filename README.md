@@ -37,14 +37,6 @@ Todas as exceções específicas do domínio estendem `QuizException` (RuntimeEx
  
 Em `TelaQuizSwing`, `capturarResposta()` bloqueia a thread do quiz (executada em uma `Thread` separada) até que o usuário clique em uma alternativa, usando uma `SynchronousQueue<Integer>` para sincronizar com a Event Dispatch Thread (EDT). Isso mantém a EDT sempre responsiva, sem travar a interface enquanto se aguarda a resposta.
  
-## Como executar
- 
-```bash
-javac -d bin $(find . -name "*.java")
-java -cp bin aplicacao1.Main   # Quiz de Programação (Swing)
-java -cp bin aplicacao2.Main   # Quiz de Matemática (console)
-```
- 
 ## Extensibilidade
  
 Uma nova aplicação-quiz exige apenas: (1) subclasse de `Quiz` implementando `carregarPerguntas()`; (2) uma `QuizFactory` correspondente; (3) opcionalmente, uma nova implementação de `TelaPresentacao` ou reuso de uma existente. Nenhuma classe do núcleo precisa ser modificada — aderência ao princípio Open/Closed.
